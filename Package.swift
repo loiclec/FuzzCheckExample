@@ -2,16 +2,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "FuzzTestExample",
+    name: "FuzzCheckExample",
     products: [
         .library(name: "Graph", targets: ["Graph"]),
-        .executable(name: "FuzzTestExample", targets: ["FuzzTestExample"])
+        .executable(name: "FuzzCheckExample", targets: ["FuzzCheckExample"])
     ],
     dependencies: [
         .package(url: "keybase://private/loiclec/swiftpm-fuzz", .revision("e20fad2beae3dd1eb003aa6a4813cec2006078b4"))
     ],
     targets: [
-        .target(name: "FuzzTestExample", dependencies: [
+        .target(name: "FuzzCheckExample", dependencies: [
             "FuzzCheck",
             "FuzzCheckTool", 
             "GraphFuzzerInputGenerator", 
@@ -21,7 +21,7 @@ let package = Package(
         .target(name: "Graph", dependencies: [])
     ],
     fuzzedTargets: [
-        "FuzzTestExample",
+        "FuzzCheckExample",
         "Graph"
     ]
 )

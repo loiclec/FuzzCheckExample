@@ -1,3 +1,3 @@
-# FuzzTestExample
+# FuzzCheckExample
 
-A description of this package.
+A sample project using [FuzzCheck](https://github.com/loiclec/FuzzCheck)
