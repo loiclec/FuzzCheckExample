@@ -4,8 +4,22 @@ import Graph
 
 public struct GraphFuzzerInputGenerator <G: FuzzerInputGenerator> : FuzzerInputMutatorGroup, FuzzerInputGenerator
     where
+    G.Input: Codable,
     G.Input: RandomInitializable
 {
+    public func newInput(maxComplexity: Double, _ rand: inout FuzzerPRNG) -> Graph<G.Input> {
+        let actualComplexity = Double.random(in: 0 ..< maxComplexity, using: &rand)
+        var g = Graph<G.Input>()
+        while GraphFuzzerInputGenerator.complexity(of: g) < actualComplexity {
+            _ = Bool.random(using: &rand) ? addVertex(&g, &rand) : addEdge(&g, &rand)
+        }
+        while GraphFuzzerInputGenerator.complexity(of: g) > actualComplexity {
+            _ = Bool.random(using: &rand) ? removeVertex(&g, &rand) : removeEdge(&g, &rand)
+        }
+        print(GraphFuzzerInputGenerator.complexity(of: g), actualComplexity, maxComplexity)
+        return g
+    }
+    
     public typealias Input = Graph<G.Input>
     public let baseInput: Graph<G.Input> = Graph()
  
@@ -28,7 +42,7 @@ public struct GraphFuzzerInputGenerator <G: FuzzerInputGenerator> : FuzzerInputM
         case modifyVertexData
     }
     
-    public func mutate(_ input: inout Input, with mutator: Mutator, _ rand: inout FuzzerPRNG) -> Bool {
+    public func mutate(_ input: inout Input, with mutator: Mutator, spareComplexity: Double, _ rand: inout FuzzerPRNG) -> Bool {
         switch mutator {
         case .addVertices:
             return addVertices(&input, &rand)
@@ -150,7 +164,7 @@ public struct GraphFuzzerInputGenerator <G: FuzzerInputGenerator> : FuzzerInputM
         guard !x.vertices.isEmpty else { return false }
         
         let i = x.vertices.indices.randomElement(using: &r)!
-        return vertexGenerator.mutate(&x.vertices[i].data, &r)
+        return vertexGenerator.mutate(&x.vertices[i].data, 0, &r)
     }
     
     public let weightedMutators: [(Mutator, UInt)] = [
@@ -164,20 +178,15 @@ public struct GraphFuzzerInputGenerator <G: FuzzerInputGenerator> : FuzzerInputM
         (.removeVertex, 107),
         (.modifyVertexData, 157),
     ]
-}
-
-public enum GraphFuzzerInputProperties <P: FuzzerInputProperties> : FuzzerInputProperties {
-    public typealias Input = Graph<P.Input>
     
-    public static func hash(of input: Graph<P.Input>) -> Int {
-        let h = input.vertices.reduce(into: Hasher()) { h, v in
-            P.hash(of: v.data).hash(into: &h)
-            v.edges.hash(into: &h)
+    public static func hash(_ input: Graph<G.Input>, into hasher: inout Hasher) {
+        for v in input.vertices {
+            G.hash(v.data, into: &hasher)
+            v.edges.hash(into: &hasher)
         }
-        return h.finalize()
     }
     
-    public static func complexity(of input: Graph<P.Input>) -> Double {
+    public static func complexity(of input: Graph<G.Input>) -> Double {
         return Double(input.totalSize) + 1.0
 //        var cplx = 1.0
 //        for v in input {

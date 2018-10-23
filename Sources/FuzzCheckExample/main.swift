@@ -25,6 +25,7 @@ func test0(_ g: Graph<UInt8>) -> Bool {
         g.vertices[2].edges[1] == 6,
         g.vertices[3].edges.count == 1,
         g.vertices[3].edges[0] == 7,
+        g.vertices[4].edges.count == 0,
         g.vertices[5].edges.count == 0,
         g.vertices[6].edges.count == 0,
         g.vertices[7].edges.count == 0
@@ -34,12 +35,11 @@ func test0(_ g: Graph<UInt8>) -> Bool {
     return true
 }
 
-typealias UInt8Fuzzing = IntegerFuzzing<UInt8>
+typealias UInt8Fuzzing = IntegerFuzzerGenerator<UInt8>
 
 
 try CommandLineFuzzer.launch(
     test: test0, 
-    generator: GraphFuzzerInputGenerator<UInt8Fuzzing>(vertexGenerator: .init()), 
-    properties: GraphFuzzerInputProperties<UInt8Fuzzing>.self
+    generator: GraphFuzzerInputGenerator<UInt8Fuzzing>(vertexGenerator: .init())
 )
 
