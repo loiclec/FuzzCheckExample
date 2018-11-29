@@ -3,7 +3,7 @@ import FuzzCheck
 import GraphFuzzerInputGenerator
 import Graph
 
-func test0(_ g: Graph<UInt8>) -> Bool {
+func test(_ g: Graph<UInt8>) -> Bool {
      if
         g.vertices.count == 8,
         g.vertices[0].data == 100,
@@ -35,11 +35,27 @@ func test0(_ g: Graph<UInt8>) -> Bool {
     return true
 }
 
-typealias UInt8Fuzzing = IntegerFuzzerGenerator<UInt8>
-
+let generator = 
+    GraphFuzzerInputGenerator<IntegerFuzzerGenerator<UInt8>>(
+        vertexGenerator: .init()
+    )
 
 try CommandLineFuzzer.launch(
-    test: test0, 
-    generator: GraphFuzzerInputGenerator<UInt8Fuzzing>(vertexGenerator: .init())
+    test: test, 
+    generator: generator
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

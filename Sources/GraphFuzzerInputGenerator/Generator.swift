@@ -16,7 +16,6 @@ public struct GraphFuzzerInputGenerator <G: FuzzerInputGenerator> : FuzzerInputM
         while GraphFuzzerInputGenerator.complexity(of: g) > actualComplexity {
             _ = Bool.random(using: &rand) ? removeVertex(&g, &rand) : removeEdge(&g, &rand)
         }
-        print(GraphFuzzerInputGenerator.complexity(of: g), actualComplexity, maxComplexity)
         return g
     }
     
@@ -187,7 +186,7 @@ public struct GraphFuzzerInputGenerator <G: FuzzerInputGenerator> : FuzzerInputM
     }
     
     public static func complexity(of input: Graph<G.Input>) -> Double {
-        return Double(input.totalSize) + 1.0
+        return Double(input.totalSize)
 //        var cplx = 1.0
 //        for v in input {
 //            cplx += P.complexity(of: v.data)
