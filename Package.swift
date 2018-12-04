@@ -8,7 +8,7 @@ let package = Package(
         .executable(name: "FuzzCheckExample", targets: ["FuzzCheckExample"])
     ],
     dependencies: [
-        .package(path: "../FuzzCheck")
+        .package(url: "https://github.com/loiclec/FuzzCheck.git", .revision("e9ab914dab0caeb5c96f7c71b022a9ecf9cbb266"))
     ],
     targets: [
         .target(name: "FuzzCheckExample", dependencies: [

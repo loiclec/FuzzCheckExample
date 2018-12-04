@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Files",
+        "repositoryURL": "https://github.com/JohnSundell/Files.git",
+        "state": {
+          "branch": null,
+          "revision": "06f95bd1bf4f8d5f50bc6bb30b808c253acd4c88",
+          "version": "2.2.1"
+        }
+      },
+      {
+        "package": "FuzzCheck",
+        "repositoryURL": "https://github.com/loiclec/FuzzCheck.git",
+        "state": {
+          "branch": null,
+          "revision": "e9ab914dab0caeb5c96f7c71b022a9ecf9cbb266",
+          "version": null
+        }
+      },
+      {
+        "package": "llbuild",
+        "repositoryURL": "https://github.com/apple/swift-llbuild.git",
+        "state": {
+          "branch": "master",
+          "revision": "ebeba84e562b588a231c910ff544b6957940f654",
+          "version": null
+        }
+      },
+      {
+        "package": "SwiftPM",
+        "repositoryURL": "https://github.com/apple/swift-package-manager",
+        "state": {
+          "branch": null,
+          "revision": "87523ce7e50d5fb0995682cd3c05558adbadfdfe",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
